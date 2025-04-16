@@ -139,7 +139,7 @@ pub mod hello_world {
 #[derive(Accounts)]
 pub struct Initialize {}
 ```
-查看本地运行日志
+查看本地运行日志 `solana logs`
 ```test
 root@DESKTOP:/data/solana/hello_world# cat .anchor/program-logs/EL5uX6XK8UUZ3s3TX1LDpPVFVh5pb49vdu7eZfC8tvrh.hello_world.log
 Streaming transaction logs mentioning EL5uX6XK8UUZ3s3TX1LDpPVFVh5pb49vdu7eZfC8tvrh. Confirmed commitment
