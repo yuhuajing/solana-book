@@ -227,9 +227,9 @@ error Command failed with exit code 1.
     }
 ```
 
-[完整rs](./1_lib.rs)
+[完整rs](../codes/1_lib.rs_lib.rs)
 
-[完整测试test](./1_test.ts)
+[完整测试test](../codes/1_test.tstest.ts)
 
 ## Reference
 [https://docs.rs/num/latest/num/](https://docs.rs/num/latest/num/)
