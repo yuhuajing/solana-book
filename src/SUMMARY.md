@@ -12,4 +12,4 @@
   - [Anchor Deploy](introduction/5_solana_deploy.md)
 - [Solana Rust基础]()
   - [rust基础信息](solana_rust_info/rust_basci_logic.md)
-
+  - [rust数据赋值解析](./solana_rust_info/rust_syntax.md)

@@ -261,13 +261,60 @@ Transaction executed in slot 32033:
 ```
 ## Flow Checks
 ### If/Require
-if Statement {}, 满足 Statement 条件的话，执行当前分支逻辑
+`if Statement {}`, 满足 `Statement` 条件的话，执行当前分支逻辑
 
-require!(Statement，Error)，不满足 Statement 条件的话，直接报错
+`require!(Statement，Error)`，不满足 `Statement` 条件的话，直接报错
 
 [If/Require](../introduction/4_errors_check.md)
 
-### Match
+三元符
 
+`solana` 合约语句的返回值不存在符号： `;` ,因此可以用 `;` 实现三元符
+```rust
+pub fn age_checker(ctx: Context<Initialize>, age: u64) -> Result<()> {
+    let result = if age >= 18 {"You are 18 years old or above"} else { "You are below 18 years old" };
+    msg!("{:?}", result);
+    Ok(())
+}
+```
+
+### Match
+`Rust` 存在高效的数据分支判断，通过 `match` 进入不同的分支
+```rust
+    pub fn matchmsg(ctx: Context<Initialize>, name: String, age: u64) -> Result<()> {
+        match age {
+            1 => {
+                // Code block executed if age equals 1
+                msg!("The age is 1");
+            },
+            2 | 3 => {
+                // Code block executed if age equals 2 or 3
+                msg!("The age is either 2 or 3");
+            },
+            4..=6 => {
+                // Code block executed if age is in the 
+                // range 4 to 6 (inclusive)
+                msg!("The age is between 4 and 6");
+            },
+            _ => {
+                // Code block executed for any other age
+                msg!("The age is something else");
+            }
+        }
+        Ok(())
+    }
+```
 ### For
+`Solana中` `..` 表示前闭后开的区间，通过 `step_by` 控制步长
+```rust
+    for i in (0..10).step_by(2) {
+        // do something...
+            
+        msg!("{}", i);
+    } 
+```
 ### Try/Catch
+`Rust` 没有 `try/catch` 的异常处理
+
+## Preference
+[https://www.rareskills.io/post/rust-basic-syntax](https://www.rareskills.io/post/rust-basic-syntax)
