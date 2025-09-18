@@ -157,8 +157,4 @@ solana balance
 ```
 
 ## Preference
-[https://www.rareskills.io/solana-tutorial](https://www.rareskills.io/solana-tutorial)
-
-[https://solana.com/zh/docs/intro/installation](https://solana.com/zh/docs)
-
-[https://beta.solpg.io/](https://beta.solpg.io/)
+[https://2501babe.github.io/posts/solana101.html](https://2501babe.github.io/posts/solana101.html)

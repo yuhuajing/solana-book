@@ -215,78 +215,35 @@ pub enum Option<T> {
 
 解析 `None` 的 `Option` 会触发 `Panic` 异常
 
-fn main() {
-let v = Vec::from([1,2,3,4,5]);
+```rust
+#[program]
+pub mod hello_world {
+    use super::*;
 
-    assert!(v.iter().max().unwrap() == 5);
+    pub fn inputuint(ctx: Context<NonEmptyAccountExample>) -> Result<()> {
+        let v = Vec::from([1,2,3,4,5]);
+        assert!(*v.iter().max().unwrap() == 5);
+        Ok(())
+    } 
 }
+```
 
-解引用*运算符
-但还是不行！这次我们得到了一个错误
 
-19 |     assert!(v.iter().max().unwrap() == 5);
-|                                     ^^ no implementation for `&{integer} == {integer}`
+### Result 和 Option
 
-等式左边的项是整数的视图（即&），而右边的项是实际整数。
+当我们可能收到 `empty` 的结果时，使用 `Option`，将空值编码成 `None`
 
-要将整数的“视图”转换为常规整数，我们需要使用“取消引用”操作。也就是在值前面加上一个*运算符。
+当我们可能收到错误时，使用 `Result`
 
-fn main() {
-let v = Vec::from([1,2,3,4,5]);
-
-    assert!(*v.iter().max().unwrap() == 5);
-}
-
-因为数组的元素是复制类型，所以 deref 运算符将默默地复制5返回的max().unwrap()。
-
-您可以将 视为在不影响原始值的*情况下“撤消” a 。&
-
-在非复制类型上使用运算符是一个复杂的主题。目前，你只需要知道，如果你收到一个复制类型的视图（借用），并且需要将其转换为“正常”类型，请使用 ` `* 运算符。
-
-ResultRust 中的 Option 与
-当我们可能收到“空”的结果时，使用选项。当我们可能收到错误时，使用 A Result（相同的ResultAnchor 程序已经返回）。
-
-Result枚举
-Rust 中的枚举Result<T, E>用于当函数操作可能成功并返回一个类型T（泛型类型）的值，或失败并返回一个类型E（泛型错误类型）的错误时。它旨在处理可能导致成功结果或错误情况的操作。
-
+```rust
 enum Result<T, E> {
-Ok(T),
-Err(E),
+    Ok(T),
+    Err(E),
 }
+```
 
-在 Rust 中，?运算符用于Result<T, E>枚举，而unwrap()用于Result<T, E>和Option<T> enums。
+`?` 用来解析 `Result` 类型，再有数据的情况下返回 `Ok` ，否则返回 `Err`
 
-操作?员
-该?运算符只能在返回 a 的函数中使用Result，因为它是返回 andErr或 的语法糖Ok。
-
-该?运算符用于从枚举中提取数据，并在函数执行成功时Result<T, E>返回变量，如果发生错误则冒泡错误。该方法的工作方式相同，但对于枚举和枚举都适用，但应谨慎使用，因为如果发生错误，可能会导致程序崩溃。OK(T)Err(E)unwrap()Result<T, E>Option<T>
-
-现在，考虑下面的代码：
-
-pub fn encode_and_decode(_ctx: Context<Initialize>) -> Result<()> {
-// Create a new instance of the `Person` struct
-let init_person: Person = Person {
-name: "Alice".to_string(),
-age: 27,
-};
-
-    // Encode the `init_person` struct into a byte vector
-    let encoded_data: Vec<u8> = init_person.try_to_vec().unwrap();
-
-    // Decode the encoded data back into a `Person` struct
-    let data: Person = decode(_ctx, encoded_data)?;
-
-    // Logs the decoded person's name and age
-    msg!("My name is {:?}, I am {:?} years old.", data.name, data.age);
-
-    Ok(())
-}
-
-pub fn decode(_accounts: Context<Initialize>, encoded_data: Vec<u8>) -> Result<Person> {
-// Decode the encoded data back into a `Person` struct
-let decoded_data: Person = Person::try_from_slice(&encoded_data).unwrap();
-
-    Ok(decoded_data)
-}
-
-该try_to_vec()方法将结构体编码为字节向量并返回一个Result<T, E>枚举，其中T是字节向量，而 则unwrap()用于从 中提取字节向量的值OK(T)。如果 无法将结构体转换为字节向量，程序将崩溃。
+`unwrap()` 用来解码 `Result` 和 `Option`  类型
+- 解析 `Result` 类型时，再返回 `Err` 的情况下会造成程序崩溃
+- 解析 `Option` 类型时，再数据为 `None` 的情况下会引起程序异常
